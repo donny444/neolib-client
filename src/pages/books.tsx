@@ -4,6 +4,7 @@ import axios from "axios";
 
 export default function Books(): JSX.Element {
   const [data, setData] = useState<string>("");
+  const [category, setCategory] = useState<string>("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -11,6 +12,9 @@ export default function Books(): JSX.Element {
         const response = await axios.get("http://localhost:5000/server/books/", {
             headers: {
               "Access-Control-Allow-Origin": "*",
+            },
+            params: {
+              category: category,
             }
           }
         );
@@ -22,11 +26,19 @@ export default function Books(): JSX.Element {
     };
 
     fetchData();
-  }, []);
+  }, [category]);
 
   return (
     <div>
       <h1>All Books in the Library</h1>
+      <select onChange={(e) => setCategory(e.target.value)} value={category}>
+        <option value="">All</option>
+        <option value="fiction">Fiction</option>
+        <option value="nonfiction">Non-Fiction</option>
+        <option value="literature">Literature</option>
+        <option value="business">Business</option>
+        <option value="others">Others</option>
+      </select>
       <div dangerouslySetInnerHTML={{ __html: data }} />
     </div>
   );
