@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import BookType from "../interfaces/book";
 import InputFieldProps from "../interfaces/inputfield";
 import EditBook from "../utils/editbook";
+import DeleteBook from "../utils/deletebook";
 
 export default function Book(): JSX.Element {
   const [data, setData] = useState<string>("");
@@ -37,6 +38,7 @@ export default function Book(): JSX.Element {
     <>
       <div dangerouslySetInnerHTML={{ __html: data }} />
       <button onClick={() => setEdit(!edit)}>{edit ? "Close Edit" : "Edit Book"}</button>
+      <button onClick={async (e) => DeleteBook(e, uuid)}>Delete Book</button>
       {edit ?
         <form>
           {Object.keys(book).map((property) => (
@@ -80,16 +82,30 @@ export default function Book(): JSX.Element {
   );
 }
 
-function InputField({ property, book, setBook }: InputFieldProps ): JSX.Element {
+function InputField({ property, book, setBook }: InputFieldProps): JSX.Element {
   return (
     <>
       <label>{property}</label>
-      <input
-        type="text"
-        name={property}
-        value={(book as BookType)[property] || ""}
-        onChange={(e) => setBook({ ...book, [property]: e.target.value })}
-      />
+      {typeof property === "string" ? (
+        <input
+          type="text"
+          name={property}
+          value={book[property as keyof BookType] || ""}
+          onChange={(e) =>
+            setBook({ ...book, [property]: e.target.value } as BookType)
+          }
+        />
+      ) : null}
+      {typeof property === "number" ? (
+        <input
+          type="number"
+          name={property}
+          value={book[property as keyof BookType] || ""}
+          onChange={(e) =>
+            setBook({ ...book, [property]: e.target.value } as BookType)
+          }
+        />
+      ) : null}
     </>
   );
 }
