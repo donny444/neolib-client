@@ -1,2 +1,2 @@
-export { default as Books } from "./books";
-export { default as Book } from "./book";
+export { default as BooksPage } from "./books_pages";
+export { default as BookPage } from "./book_page";

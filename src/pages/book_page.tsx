@@ -1,38 +1,44 @@
 import { useEffect, useState, JSX } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import BookType from "../interfaces/book";
 import InputFieldProps from "../interfaces/inputfield";
 import EditBook from "../utils/editbook";
 import DeleteBook from "../utils/deletebook";
 
-export default function Book(): JSX.Element {
+export default function BookPage(): JSX.Element {
   const [data, setData] = useState<string>("");
   const [edit, setEdit] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
-  const [book, setBook] = useState<BookType>(undefined as unknown as BookType);
+  const [book, setBook] = useState<BookType>({} as unknown as BookType);
+  // const fields = ["Title", "Publisher", "Category", "Author", "Pages", "Publication Year", "ISBN"];
   const uuid = useParams().uuid as string;
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchBook = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/server/${uuid}/`,
+          `http://localhost:5000/books/${uuid}/`,
           {
             headers: {
               "Access-Control-Allow-Origin": "*",
             },
           }
         );
-        console.log(response.data);
-        setData(response.data);
+        if (response.status !== 200) {
+          navigate("/");
+        }
+        const data = response.data;
+        setData(data);
       } catch (error) {
         console.error("Error fetching data:", error);
+        navigate("/");
       }
     };
 
-    fetchData();
-  }, [uuid]);
+    fetchBook();
+  }, [uuid, navigate]);
 
   return (
     <>
@@ -41,9 +47,13 @@ export default function Book(): JSX.Element {
       <button onClick={async (e) => DeleteBook(e, uuid)}>Delete Book</button>
       {edit ?
         <form>
-          {Object.keys(book).map((property) => (
-            <InputField key={property} property={property} book={book} setBook={setBook} />
-          ))}
+          <InputField property="title" type="text" book={book} setBook={setBook} />
+          <InputField property="publisher" type="text" book={book} setBook={setBook} />
+          <InputField property="category" type="select" book={book} setBook={setBook} />
+          <InputField property="author" type="text" book={book} setBook={setBook} />
+          <InputField property="page" type="number" book={book} setBook={setBook} />
+          <InputField property="publication_year" type="number" book={book} setBook={setBook} />
+          <InputField property="isbn" type="text" book={book} setBook={setBook} />
           <input type="submit" value="Submit" onSubmit={async (e) => {
             const result = await EditBook(e, book, uuid);
 
@@ -82,13 +92,13 @@ export default function Book(): JSX.Element {
   );
 }
 
-function InputField({ property, book, setBook }: InputFieldProps): JSX.Element {
+function InputField({ property, type, book, setBook }: InputFieldProps): JSX.Element {
   return (
     <>
       <label>{property}</label>
-      {typeof property === "string" ? (
+      {type === "text" || type === "number" ? (
         <input
-          type="text"
+          type={type}
           name={property}
           value={book[property as keyof BookType] || ""}
           onChange={(e) =>
@@ -96,15 +106,20 @@ function InputField({ property, book, setBook }: InputFieldProps): JSX.Element {
           }
         />
       ) : null}
-      {typeof property === "number" ? (
-        <input
-          type="number"
-          name={property}
+      {type === "select" ? (
+        <select
+          name={type}
           value={book[property as keyof BookType] || ""}
           onChange={(e) =>
             setBook({ ...book, [property]: e.target.value } as BookType)
           }
-        />
+        >
+          <option value="fiction">Fiction</option>
+          <option value="nonfiction">Non-Fiction</option>
+          <option value="literature">Literature</option>
+          <option value="business">Business</option>
+          <option value="others">Others</option>
+        </select>
       ) : null}
     </>
   );
