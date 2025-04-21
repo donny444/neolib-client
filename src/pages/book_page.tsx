@@ -2,7 +2,7 @@ import { useEffect, useState, JSX } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import BookType from "../interfaces/book";
-import InputFieldProps from "../interfaces/inputfield";
+import InputField from "../components/input_field";
 import EditBook from "../utils/editbook";
 import DeleteBook from "../utils/deletebook";
 
@@ -11,7 +11,6 @@ export default function BookPage(): JSX.Element {
   const [edit, setEdit] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [book, setBook] = useState<BookType>({} as unknown as BookType);
-  // const fields = ["Title", "Publisher", "Category", "Author", "Pages", "Publication Year", "ISBN"];
   const uuid = useParams().uuid as string;
   const navigate = useNavigate();
 
@@ -88,39 +87,6 @@ export default function BookPage(): JSX.Element {
         setTimeout(() => {
           setError(false);
         }, 3000)}
-    </>
-  );
-}
-
-function InputField({ property, type, book, setBook }: InputFieldProps): JSX.Element {
-  return (
-    <>
-      <label>{property}</label>
-      {type === "text" || type === "number" ? (
-        <input
-          type={type}
-          name={property}
-          value={book[property as keyof BookType] || ""}
-          onChange={(e) =>
-            setBook({ ...book, [property]: e.target.value } as BookType)
-          }
-        />
-      ) : null}
-      {type === "select" ? (
-        <select
-          name={type}
-          value={book[property as keyof BookType] || ""}
-          onChange={(e) =>
-            setBook({ ...book, [property]: e.target.value } as BookType)
-          }
-        >
-          <option value="fiction">Fiction</option>
-          <option value="nonfiction">Non-Fiction</option>
-          <option value="literature">Literature</option>
-          <option value="business">Business</option>
-          <option value="others">Others</option>
-        </select>
-      ) : null}
     </>
   );
 }
