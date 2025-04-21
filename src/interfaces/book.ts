@@ -8,4 +8,5 @@ export default interface BookType {
     language: string;
     publication_year: number;
     isbn: string;
+    file?: Blob;
 }
