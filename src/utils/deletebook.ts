@@ -5,18 +5,18 @@ export default async function DeleteBook(e: FormEvent, uuid: string): Promise<st
     try {
         e.preventDefault();
         const response = await axios.delete(
-            `http://localhost:5000/server/${uuid}/`,
+            `http://localhost:5000/books/${uuid}/`,
             {
                 headers: {
                     "Access-Control-Allow-Origin": "*",
                 },
             }
         );
-        if (response.status === 200) {
-            console.log("Book deleted successfully:", response.data);
-            return response.data;
+        if (response.status === 204) {
+            console.log("Deleted the book specified by the UUID: ", uuid);
+            return
         } else {
-            console.error("Failed to delete book:", response.statusText);
+            console.error(response.data);
         }
     } catch (error) {
         console.error("Error deleting book:", error);

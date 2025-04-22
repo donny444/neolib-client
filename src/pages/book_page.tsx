@@ -42,8 +42,17 @@ export default function BookPage(): JSX.Element {
   return (
     <>
       <div dangerouslySetInnerHTML={{ __html: data }} />
-      <button onClick={() => setEdit(!edit)}>{edit ? "Close Edit" : "Edit Book"}</button>
-      <button onClick={async (e) => DeleteBook(e, uuid)}>Delete Book</button>
+      {data ?
+        <>
+          <button onClick={() => setEdit(!edit)}>{edit ? "Close Edit" : "Edit Book"}</button>
+          <button onClick={async (e) => {
+            DeleteBook(e, uuid)
+            navigate("/");
+          }}>
+            Delete Book
+          </button>
+        </>
+        : <></>}
       {edit ?
         <form>
           <InputField property="title" type="text" book={book} setBook={setBook} />
@@ -65,7 +74,7 @@ export default function BookPage(): JSX.Element {
           }}
           />
         </form>
-        : null}
+        : <></>}
       {error && (
         <div
           style={{
