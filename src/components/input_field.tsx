@@ -5,12 +5,12 @@ import InputFieldProps from "../interfaces/inputfield";
 export default function InputField({ property, type, book, setBook, }: InputFieldProps): JSX.Element {
   return (
     <>
-      <label>{property}</label>
+      <label htmlFor={property}>{property}</label>
       {type === "text" || type === "number" ? (
         <input
           type={type}
           name={property}
-          value={book?.[property as keyof BookType] ?? ""}
+          value={book?.[property as keyof BookType] as string | undefined}
           onChange={(e) =>
             setBook({ ...book, [property]: e.target.value } as BookType)
           }
@@ -18,8 +18,7 @@ export default function InputField({ property, type, book, setBook, }: InputFiel
       ) : null}
       {type === "select" ? (
         <select
-          name={type}
-          value={book?.[property as keyof BookType] ?? ""}
+          name={property}
           onChange={(e) =>
             setBook({ ...book, [property]: e.target.value } as BookType)
           }

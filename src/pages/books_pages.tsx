@@ -17,7 +17,6 @@ export default function BooksPage(): JSX.Element {
           }
         }
       );
-      console.log(response.data);
       setData(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
