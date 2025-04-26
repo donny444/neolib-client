@@ -22,12 +22,16 @@ export default function InputField({ property, type, book, setBook, }: InputFiel
           onChange={(e) =>
             setBook({ ...book, [property]: e.target.value } as BookType)
           }
+          defaultValue={book?.[property as keyof BookType] as string | undefined}
         >
-          <option value="fiction">Fiction</option>
-          <option value="nonfiction">Non-Fiction</option>
-          <option value="literature">Literature</option>
-          <option value="business">Business</option>
-          <option value="others">Others</option>
+          <option value="">{`Select ${property}`}</option>
+          <option value="Literature">Literature</option>
+          <option value="Social Studies">Social Studies</option>
+          <option value="Science">Science</option>
+          <option value="Textbook">Textbook</option>
+          <option value="Business">Business</option>
+          <option value="Self-Help">Self-Help</option>
+          <option value="Other">Other</option>
         </select>
       ) : null}
     </>
