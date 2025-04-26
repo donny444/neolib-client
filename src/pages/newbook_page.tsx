@@ -1,4 +1,5 @@
 import { useState, JSX } from "react";
+import { useNavigate } from "react-router-dom";
 import BookType from "../interfaces/book";
 import InputFieldProps from "../interfaces/inputfield";
 import InputField from "../components/input_field";
@@ -11,18 +12,25 @@ export default function NewBookPage(): JSX.Element {
     { property: "publisher", type: "text", setBook: setBook },
     { property: "category", type: "select", setBook: setBook },
     { property: "author", type: "text", setBook: setBook },
-    { property: "page", type: "number", setBook: setBook },
+    { property: "pages", type: "number", setBook: setBook },
+    { property: "language", type: "text", setBook: setBook },
     { property: "publication_year", type: "number", setBook: setBook },
     { property: "isbn", type: "text", setBook: setBook },
   ];
+  const navigate = useNavigate();
 
   return (
     <>
       <h1>Add New Book</h1>
       <form
-        onSubmit={(e) => {
+        onSubmit={async (e) => {
           e.preventDefault();
-          AddBook(book);
+          const response = await AddBook(book);
+          if (response?.status === 201) {
+            navigate("/");
+          } else {
+            console.log(response?.data);
+          }
         }}
         encType="multipart/form-data"
       >

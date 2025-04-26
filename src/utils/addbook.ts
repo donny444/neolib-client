@@ -1,8 +1,8 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import type BookType from "../interfaces/book";
 
 
-export default async function AddBook(book: BookType)  {
+export default async function AddBook(book: BookType): Promise<AxiosResponse | undefined> {
   const formData = new FormData();
 
   for (const key in book) {
@@ -21,13 +21,8 @@ export default async function AddBook(book: BookType)  {
         },
       }
     );
-    if (response.status === 201) {
-      console.log(response.data);
-      return response.data;
-    } else {
-      console.log(response.data);
-    }
-  } catch (error) {
-    console.error(error);
+    return response;
+  } catch (err) {
+    console.error(err);
   }
 }
