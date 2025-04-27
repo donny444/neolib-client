@@ -9,6 +9,7 @@ export default async function DeleteBook(e: FormEvent, uuid: string): Promise<st
             {
                 headers: {
                     "Access-Control-Allow-Origin": "*",
+                    "Authorization": sessionStorage.getItem("token") || "",
                 },
             }
         );

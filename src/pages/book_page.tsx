@@ -22,6 +22,7 @@ export default function BookPage(): JSX.Element {
           {
             headers: {
               "Access-Control-Allow-Origin": "*",
+              "Authorization": sessionStorage.getItem("token") || "",
             },
           }
         );

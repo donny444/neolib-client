@@ -11,6 +11,7 @@ export default function BooksPage(): JSX.Element {
       const response = await axios.get("http://localhost:5000/books/", {
           headers: {
             "Access-Control-Allow-Origin": "*",
+            "Authorization": sessionStorage.getItem("token") || ""
           },
           params: {
             category: category,

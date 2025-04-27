@@ -18,6 +18,7 @@ export default async function AddBook(book: BookType): Promise<AxiosResponse | u
       {
         headers: {
           "Content-Type": "multipart/form-data",
+          "Authorization": sessionStorage.getItem("token") || "",
         },
       }
     );

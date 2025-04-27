@@ -10,6 +10,7 @@ export default async function EditBook(e: FormEvent, book: Book, uuid: string): 
             {
                 headers: {
                     "Access-Control-Allow-Origin": "*",
+                    "Authorization": sessionStorage.getItem("token") || "",
                 },
                 body: JSON.stringify(book),
             }
