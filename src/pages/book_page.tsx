@@ -5,6 +5,7 @@ import BookType from "../interfaces/book";
 import InputField from "../components/input_field";
 import EditBook from "../utils/editbook";
 import DeleteBook from "../utils/deletebook";
+import { useAuth } from "../contexts/auth_context";
 
 export default function BookPage(): JSX.Element {
   const [data, setData] = useState<string>("");
@@ -12,7 +13,12 @@ export default function BookPage(): JSX.Element {
   const [error, setError] = useState<boolean>(false);
   const [book, setBook] = useState<BookType>({} as unknown as BookType);
   const uuid = useParams().uuid as string;
+  const isAuthenticated = useAuth()?.isAuthenticated;
   const navigate = useNavigate();
+
+  if (!isAuthenticated) {
+    navigate("/signin");
+  }
 
   useEffect(() => {
     const fetchBook = async () => {

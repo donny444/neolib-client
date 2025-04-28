@@ -1,10 +1,18 @@
 import { useEffect, useState, useCallback, JSX } from "react";
 import axios from "axios";
 // import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/auth_context";
 
 export default function BooksPage(): JSX.Element {
   const [data, setData] = useState<string>("");
   const [category, setCategory] = useState<string>("");
+  const isAuthenticated = useAuth()?.isAuthenticated;
+  const navigate = useNavigate();
+
+  if (!isAuthenticated) {
+    navigate("/signin");
+  }
 
   const fetchBooks = useCallback(async () => {
     try {

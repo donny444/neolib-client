@@ -1,11 +1,19 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/auth_context';
 
 export default function SignUpPage() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const isAuthenticated = useAuth()?.isAuthenticated;
+  const navigate = useNavigate();
+
+  if (isAuthenticated) {
+    navigate("/");
+  }
 
   const handleSubmit = async (e: React.FormEvent, username: string, email: string, password: string) => {
     e.preventDefault();

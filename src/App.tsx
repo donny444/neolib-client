@@ -7,11 +7,12 @@ import {
   SignInPage,
   SignUpPage,
 } from "./pages";
+import { AuthProvider } from "./contexts/auth_context";
 import "./App.css";
 
 function App(): JSX.Element {
   return (
-    <>
+    <AuthProvider>
       <Router>
         <Routes>
           <Route path="/" element={<BooksPage />} />
@@ -21,7 +22,7 @@ function App(): JSX.Element {
           <Route path="/signup" element={<SignUpPage />} />
         </Routes>
       </Router>
-    </>
+    </AuthProvider>
   );
 }
 

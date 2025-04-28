@@ -4,6 +4,7 @@ import BookType from "../interfaces/book";
 import InputFieldProps from "../interfaces/inputfield";
 import InputField from "../components/input_field";
 import AddBook from "../utils/addbook";
+import { useAuth } from "../contexts/auth_context";
 
 export default function NewBookPage(): JSX.Element {
   const [book, setBook] = useState<BookType>({} as unknown as BookType);
@@ -17,7 +18,12 @@ export default function NewBookPage(): JSX.Element {
     { property: "publication_year", type: "number", setBook: setBook },
     { property: "isbn", type: "text", setBook: setBook },
   ];
+  const isAuthenticated = useAuth()?.isAuthenticated;
   const navigate = useNavigate();
+
+  if (!isAuthenticated) {
+    navigate("/signin");
+  }
 
   return (
     <>

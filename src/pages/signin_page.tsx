@@ -1,10 +1,18 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/auth_context';
 
 export default function SignInPage() {
   const [usernameOrEmail, setUsernameOrEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const isAuthenticated = useAuth()?.isAuthenticated;
+  const navigate = useNavigate();
+
+  if (isAuthenticated) {
+    navigate("/");
+  }
 
   const handleSubmit = async (e: React.FormEvent, usernameOrEmail: string, password: string) => {
     e.preventDefault();
