@@ -16,9 +16,11 @@ export default function BookPage(): JSX.Element {
   const isAuthenticated = useAuth()?.isAuthenticated;
   const navigate = useNavigate();
 
-  if (!isAuthenticated) {
-    navigate("/signin");
-  }
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/signin");
+    }
+  }, [isAuthenticated, navigate]);
 
   useEffect(() => {
     const fetchBook = async () => {

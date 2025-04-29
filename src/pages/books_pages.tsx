@@ -10,9 +10,11 @@ export default function BooksPage(): JSX.Element {
   const isAuthenticated = useAuth()?.isAuthenticated;
   const navigate = useNavigate();
 
-  if (!isAuthenticated) {
-    navigate("/signin");
-  }
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/signin");
+    }
+  }, [isAuthenticated, navigate]);
 
   const fetchBooks = useCallback(async () => {
     try {

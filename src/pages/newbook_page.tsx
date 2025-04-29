@@ -1,4 +1,4 @@
-import { useState, JSX } from "react";
+import { useState, JSX, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import BookType from "../interfaces/book";
 import InputFieldProps from "../interfaces/inputfield";
@@ -21,9 +21,11 @@ export default function NewBookPage(): JSX.Element {
   const isAuthenticated = useAuth()?.isAuthenticated;
   const navigate = useNavigate();
 
-  if (!isAuthenticated) {
-    navigate("/signin");
-  }
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/signin");
+    }
+  }, [isAuthenticated, navigate]);
 
   return (
     <>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/auth_context';
@@ -10,9 +10,11 @@ export default function SignInPage() {
   const isAuthenticated = useAuth()?.isAuthenticated;
   const navigate = useNavigate();
 
-  if (isAuthenticated) {
-    navigate("/");
-  }
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/");
+    }
+  }, [isAuthenticated, navigate]);
 
   const handleSubmit = async (e: React.FormEvent, usernameOrEmail: string, password: string) => {
     e.preventDefault();
@@ -20,6 +22,7 @@ export default function SignInPage() {
     if (response?.status === 200) {
         const token = response?.data;
         sessionStorage.setItem("token", token);
+        navigate("/");
     } else {
       setError("Invalid username or password. Please try again.");
     }
@@ -32,7 +35,7 @@ export default function SignInPage() {
         <div>
           <label>Username or Email:</label>
           <input
-            type="email"
+            type="text"
             value={usernameOrEmail}
             placeholder="Please enter your username or email"
             onChange={(e) => setUsernameOrEmail(e.target.value)}
