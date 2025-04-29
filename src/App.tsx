@@ -7,6 +7,7 @@ import {
   SignInPage,
   SignUpPage,
 } from "./pages";
+import NavBar from "./components/navbar";
 import { AuthProvider } from "./contexts/auth_context";
 import "./App.css";
 
@@ -14,6 +15,7 @@ function App(): JSX.Element {
   return (
     <AuthProvider>
       <Router>
+        <NavBar />
         <Routes>
           <Route path="/" element={<BooksPage />} />
           <Route path="/:uuid" element={<BookPage />} />
