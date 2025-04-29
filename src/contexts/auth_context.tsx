@@ -3,7 +3,7 @@ import React, { createContext, useContext, useEffect, useState, JSX } from "reac
 interface AuthContextType {
   isAuthenticated: boolean;
   checkAuth: () => void;
-  logout: () => void;
+  signout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -16,7 +16,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }): JSX.E
     setIsAuthenticated(!!token);
   };
 
-  const logout = () => {
+  const signout = () => {
     sessionStorage.removeItem("token");
     setIsAuthenticated(false);
   };
@@ -26,7 +26,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }): JSX.E
   }, []);
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, checkAuth, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, checkAuth, signout }}>
       {children}
     </AuthContext.Provider>
   );
