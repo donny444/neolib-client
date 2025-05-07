@@ -2,11 +2,11 @@ import axios from "axios";
 import type Book from "../interfaces/book";
 import { FormEvent } from "react";
 
-export default async function EditBook(e: FormEvent, book: Book, uuid: string): Promise<string | undefined> {
+export default async function EditBook(e: FormEvent, book: Book, isbn: string): Promise<string | undefined> {
     try {
         e.preventDefault();
         const response = await axios.put(
-            `http://localhost:5000/server/${uuid}/`,
+            `http://localhost:5000/server/${isbn}/`,
             {
                 headers: {
                     "Access-Control-Allow-Origin": "*",

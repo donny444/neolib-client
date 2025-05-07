@@ -18,7 +18,7 @@ function App(): JSX.Element {
         <NavBar />
         <Routes>
           <Route path="/" element={<BooksPage />} />
-          <Route path="/:uuid" element={<BookPage />} />
+          <Route path="/:isbn" element={<BookPage />} />
           <Route path="/new-book" element={<NewBookPage />} />
           <Route path="/signin" element={<SignInPage />} />
           <Route path="/signup" element={<SignUpPage />} />
