@@ -11,7 +11,7 @@ export default function SignInPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated === true) {
       navigate("/");
     }
   }, [isAuthenticated, navigate]);
@@ -29,12 +29,18 @@ export default function SignInPage() {
   }
 
   return (
-    <div className="signin-page">
-      <h1>Sign In</h1>
-      <form onSubmit={(e) => handleSubmit(e, usernameOrEmail as string, password as string)}>
-        <div>
-          <label>Username or Email:</label>
+    <div 
+      className="container-md bg-light rounded-3 p-5 mt-5 border border-dark"
+      style={{ maxWidth: "720px" }}
+    >
+      <h1 className="row justify-content-center">Sign In to Your neoLib account.</h1>
+      <form
+        className="row justify-content-center"
+        onSubmit={(e) => handleSubmit(e, usernameOrEmail as string, password as string)}>
+        <div className="align-items-center">
+          <label className="col-form-label">Username or Email:</label>
           <input
+            className="form-control w-100"
             type="text"
             value={usernameOrEmail}
             placeholder="Please enter your username or email"
@@ -42,9 +48,10 @@ export default function SignInPage() {
             required
           />
         </div>
-        <div>
-          <label>Password:</label>
+        <div className="align-items-center">
+          <label className="col-form-label">Password:</label>
           <input
+            className="form-control w-100"
             type="password"
             value={password}
             minLength={8}
@@ -54,8 +61,8 @@ export default function SignInPage() {
             required
           />
         </div>
-        {error && <p className="error">{error}</p>}
-        <button type="submit">Sign In</button>
+        {error && <p className="text-danger"><b>{error}</b></p>}
+        <button className="w-75 py-2 my-3 bg-success text-light rounded-2" type="submit"><b>Sign In</b></button>
       </form>
     </div>
   );

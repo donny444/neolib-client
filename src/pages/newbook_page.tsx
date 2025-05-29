@@ -22,14 +22,16 @@ export default function NewBookPage(): JSX.Element {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (isAuthenticated === false) {
       navigate("/signin");
     }
   }, [isAuthenticated, navigate]);
 
   return (
-    <>
-      <h1>Add New Book</h1>
+    <div className="container-md"
+      style={{ maxWidth: "720px" }}
+    >
+      <h3 className="display-6 text-center mb-3">Add New Book</h3>
       <form
         onSubmit={async (e) => {
           e.preventDefault();
@@ -42,16 +44,23 @@ export default function NewBookPage(): JSX.Element {
         }}
         encType="multipart/form-data"
       >
-        <div>
-          <label htmlFor="image">Upload Book Cover:</label>
-          <input
-            type="file"
-            name="book_image"
-            accept="image/*"
-            onChange={(e) => {
-              setBook({ ...book, file: e.target.files?.[0] });
-            }}
-          />
+        <div className="row g-2 w-100 mb-2">
+          <div className="col-auto">
+            <label className="col-form-label" htmlFor="image"><b>Upload Book Cover:</b></label>
+          </div>
+          <div className="col-auto">
+            <input
+              className="form-control"
+              type="file"
+              name="image"
+              accept="image/*"
+              title="Upload Book Cover"
+              placeholder="Upload Book Cover"
+              onChange={(e) => {
+                setBook({ ...book, file: e.target.files?.[0] });
+              }}
+            />
+          </div>
         </div>
         {fields.map((field) => (
           <InputField
@@ -62,9 +71,9 @@ export default function NewBookPage(): JSX.Element {
             setBook={setBook}
           />
         ))}
-        <input type="submit" value="Add Book" />
+        <input className="btn btn-success w-100 py-2" type="submit" value="Add Book" />
       </form>
-    </>
+    </div>
   );
 }
 

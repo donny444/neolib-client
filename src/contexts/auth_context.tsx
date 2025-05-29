@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState, JSX } from "react";
 
 interface AuthContextType {
-  isAuthenticated: boolean;
+  isAuthenticated: boolean | undefined;
   checkAuth: () => void;
   signout: () => void;
 }
@@ -9,7 +9,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }): JSX.Element {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | undefined>(undefined);
 
   const checkAuth = () => {
     const token = sessionStorage.getItem("token");

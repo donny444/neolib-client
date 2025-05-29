@@ -17,7 +17,7 @@ export default function BookPage(): JSX.Element {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (isAuthenticated === false) {
       navigate("/signin");
     }
   }, [isAuthenticated, navigate]);
@@ -51,29 +51,43 @@ export default function BookPage(): JSX.Element {
   return (
     <>
       {/* <div dangerouslySetInnerHTML={{ __html: data }} /> data from HTML response */ }
-      <div>
-        <h3>{book.title}</h3>
-        <h3>ISBN: {book.isbn}</h3>
-        <p>Publisher: {book.publisher}</p>
-        <p>Category: {book.category}</p>
-        <p>Author: {book.author}</p>
-        <p>Pages: {book.pages}</p>
-        <p>Language: {book.language}</p>
-        <p>Publication Year: {book.publication_year}</p>
+      <div
+        className="container-md d-flex flex-column w-50 p-3 mx-auto border border-2 border-dark rounded-3"
+        style={{ maxWidth: "720px" }}
+      >
+        <p className="text-center mb-1"><b>{book.title}</b></p>
+        <p className="text-center mb-1"><b>ISBN: {book.isbn}</b></p>
+        <p className="text-start mb-1"><b>Publisher:</b> {book.publisher}</p>
+        <p className="text-start mb-1"><b>Category:</b> {book.category}</p>
+        <p className="text-start mb-1"><b>Author:</b> {book.author}</p>
+        <p className="text-start mb-1"><b>Pages:</b> {book.pages}</p>
+        <p className="text-start mb-1"><b>Language:</b> {book.language}</p>
+        <p className="text-start mb-1"><b>Publication Year:</b> {book.publication_year}</p>
       </div>
       {book ?
-        <>
-          <button onClick={() => setEdit(!edit)}>{edit ? "Close Edit" : "Edit Book"}</button>
+        <div
+          className="text-center my-2 d-flex justify-content-center gap-2"
+        >
+          <button onClick={() => setEdit(!edit)}
+            className="btn btn-warning"
+          >
+            {edit ? "Close Edit" : "Edit Book"}
+          </button>
           <button onClick={async (e) => {
             DeleteBook(e, isbn)
             navigate("/");
-          }}>
+          }}
+            className="btn btn-danger"
+          >
             Delete Book
           </button>
-        </>
+        </div>
         : <></>}
       {edit ?
-        <form>
+        <form
+          className="container-md d-flex flex-column w-50 p-3 mx-auto"
+          style={{ maxWidth: "720px" }} 
+        >
           <InputField property="title" type="text" book={book} setBook={setBook} />
           <InputField property="publisher" type="text" book={book} setBook={setBook} />
           <InputField property="category" type="select" book={book} setBook={setBook} />
@@ -81,7 +95,7 @@ export default function BookPage(): JSX.Element {
           <InputField property="pages" type="number" book={book} setBook={setBook} />
           <InputField property="publication_year" type="number" book={book} setBook={setBook} />
           <InputField property="isbn" type="text" book={book} setBook={setBook} />
-          <input type="submit" value="Submit" onSubmit={async (e) => {
+          <input className="btn-success py-2 mt-3 border-0 rounded-2" type="submit" value="Submit" onSubmit={async (e) => {
             const result = await EditBook(e, book, isbn);
 
             if (result) {
