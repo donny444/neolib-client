@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/auth_context';
 
 export default function SignInPage() {
@@ -20,7 +20,9 @@ export default function SignInPage() {
     e.preventDefault();
     const response = await handleSignIn(usernameOrEmail, password);
     if (response?.status === 200) {
-        const token = response?.data;
+        const { username, token, message } = response?.data;
+        console.log(message);
+        sessionStorage.setItem("username", username);
         sessionStorage.setItem("token", token);
         navigate("/");
     } else {
@@ -61,8 +63,13 @@ export default function SignInPage() {
             required
           />
         </div>
-        {error && <p className="text-danger"><b>{error}</b></p>}
+        <div className="align-items-center">
+          <label className="col-form-label">Don't have an account? <Link to="/signup">Sign Up</Link></label>
+        </div>
         <button className="w-75 py-2 my-3 bg-success text-light rounded-2" type="submit"><b>Sign In</b></button>
+        <div className="align-items-center py-2" style={{ height: "100px" }}>
+          {error && <p className="text-danger"><b>{error}</b></p>}
+        </div>
       </form>
     </div>
   );

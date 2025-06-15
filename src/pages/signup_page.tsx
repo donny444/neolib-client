@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/auth_context';
 
 export default function SignUpPage() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [data, setData] = useState<string>("");
   const [error, setError] = useState("");
   const isAuthenticated = useAuth()?.isAuthenticated;
   const navigate = useNavigate();
@@ -22,7 +23,8 @@ export default function SignUpPage() {
     const response = await handleSignUp(username, email, password);
     if (response?.status === 201) {
         const data: string = response?.data;
-        console.log(data);
+        setData(data);
+        navigate("/signin");
     } else {
       setError("Invalid username or password. Please try again.");
     }
@@ -74,8 +76,13 @@ export default function SignUpPage() {
             required
           />
         </div>
-        {error && <p className="text-danger"><b>{error}</b></p>}
+        <div className="align-items-center">
+          <label className="col-form-label">Already have an account? <Link to="/signin">Sign In</Link></label>
+        </div>
         <button className="w-75 py-2 my-3 bg-success text-light rounded-2" type="submit"><b>Sign Up</b></button>
+        <div className="align-items-center py-2" style={{ height: "100px" }}>
+          {error && <p className="text-danger"><b>{error}</b></p>}
+        </div>
       </form>
     </div>
   );
