@@ -1,5 +1,5 @@
 import { useState, JSX, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import BookType from "../interfaces/book";
 import InputFieldProps from "../interfaces/inputfield";
 import InputField from "../components/input_field";
@@ -28,52 +28,55 @@ export default function NewBookPage(): JSX.Element {
   }, [isAuthenticated, navigate]);
 
   return (
-    <div className="container-md"
-      style={{ maxWidth: "720px" }}
-    >
-      <h3 className="display-6 text-center mb-3">Add New Book</h3>
-      <form
-        onSubmit={async (e) => {
-          e.preventDefault();
-          const response = await AddBook(book);
-          if (response?.status === 201) {
-            navigate("/");
-          } else {
-            console.log(response?.data);
-          }
-        }}
-        encType="multipart/form-data"
+    <>
+      <Link to="/">Back</Link>
+      <div className="container-md"
+        style={{ maxWidth: "720px" }}
       >
-        <div className="row g-2 w-100 mb-2">
-          <div className="col-auto">
-            <label className="col-form-label" htmlFor="image"><b>Upload Book Cover:</b></label>
+        <h3 className="display-6 text-center mb-3">Add New Book</h3>
+        <form
+          onSubmit={async (e) => {
+            e.preventDefault();
+            const response = await AddBook(book);
+            if (response?.status === 201) {
+              navigate("/");
+            } else {
+              console.log(response?.data);
+            }
+          }}
+          encType="multipart/form-data"
+        >
+          <div className="row g-2 w-100 mb-2">
+            <div className="col-auto">
+              <label className="col-form-label" htmlFor="image"><b>Upload Book Cover:</b></label>
+            </div>
+            <div className="col-auto">
+              <input
+                className="form-control"
+                type="file"
+                name="image"
+                accept="image/*"
+                title="Upload Book Cover"
+                placeholder="Upload Book Cover"
+                onChange={(e) => {
+                  setBook({ ...book, file: e.target.files?.[0] });
+                }}
+              />
+            </div>
           </div>
-          <div className="col-auto">
-            <input
-              className="form-control"
-              type="file"
-              name="image"
-              accept="image/*"
-              title="Upload Book Cover"
-              placeholder="Upload Book Cover"
-              onChange={(e) => {
-                setBook({ ...book, file: e.target.files?.[0] });
-              }}
+          {fields.map((field) => (
+            <InputField
+              key={field.property}
+              property={field.property}
+              type={field.type}
+              book={book}
+              setBook={setBook}
             />
-          </div>
-        </div>
-        {fields.map((field) => (
-          <InputField
-            key={field.property}
-            property={field.property}
-            type={field.type}
-            book={book}
-            setBook={setBook}
-          />
-        ))}
-        <input className="btn btn-success w-100 py-2" type="submit" value="Add Book" />
-      </form>
-    </div>
+          ))}
+          <input className="btn btn-success w-100 py-2" type="submit" value="Add Book" />
+        </form>
+      </div>
+    </>
   );
 }
 

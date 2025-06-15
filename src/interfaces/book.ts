@@ -7,5 +7,7 @@ export default interface BookType {
     pages?: string;
     language?: string;
     publication_year?: string;
+    is_read?: boolean;
     file?: File;
+    path?: string;
 }
