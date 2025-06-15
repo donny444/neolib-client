@@ -1,9 +1,10 @@
 import { useEffect, useState, JSX } from "react";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import { useParams, useNavigate } from "react-router-dom";
 import BookType from "../interfaces/book";
 import InputField from "../components/input_field";
 import EditBook from "../utils/editbook";
+import CheckBook from "../utils/checkbook";
 import DeleteBook from "../utils/deletebook";
 import { useAuth } from "../contexts/auth_context";
 
@@ -37,10 +38,10 @@ export default function BookPage(): JSX.Element {
         if (response.status !== 200) {
           navigate("/");
         }
-        const data = response.data;
-        setBook(data);
+        const bookData = response.data;
+        setBook(bookData);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching book data:", error);
         navigate("/");
       }
     };
@@ -50,38 +51,53 @@ export default function BookPage(): JSX.Element {
 
   return (
     <>
+      <Link to="/">
+        <img src="src/assets/icons/back.svg" alt="Back" />
+      </Link>
       {/* <div dangerouslySetInnerHTML={{ __html: data }} /> data from HTML response */ }
-      <div
-        className="container-md d-flex flex-column w-50 p-3 mx-auto border border-2 border-dark rounded-3"
-        style={{ maxWidth: "720px" }}
-      >
-        <p className="text-center mb-1"><b>{book.title}</b></p>
-        <p className="text-center mb-1"><b>ISBN: {book.isbn}</b></p>
-        <p className="text-start mb-1"><b>Publisher:</b> {book.publisher}</p>
-        <p className="text-start mb-1"><b>Category:</b> {book.category}</p>
-        <p className="text-start mb-1"><b>Author:</b> {book.author}</p>
-        <p className="text-start mb-1"><b>Pages:</b> {book.pages}</p>
-        <p className="text-start mb-1"><b>Language:</b> {book.language}</p>
-        <p className="text-start mb-1"><b>Publication Year:</b> {book.publication_year}</p>
-      </div>
       {book ?
-        <div
-          className="text-center my-2 d-flex justify-content-center gap-2"
-        >
-          <button onClick={() => setEdit(!edit)}
-            className="btn btn-warning"
+        <>
+          <div
+            className="container-md d-flex flex-column w-50 p-3 mx-auto border border-2 border-dark rounded-3"
+            style={{ maxWidth: "720px" }}
           >
-            {edit ? "Close Edit" : "Edit Book"}
-          </button>
-          <button onClick={async (e) => {
-            DeleteBook(e, isbn)
-            navigate("/");
-          }}
-            className="btn btn-danger"
+            <p className="text-center mb-1"><b>{book.title}</b></p>
+            <p className="text-center mb-1"><b>ISBN: {book.isbn}</b></p>
+            <p className="text-start mb-1"><b>Publisher:</b> {book.publisher}</p>
+            <p className="text-start mb-1"><b>Category:</b> {book.category}</p>
+            <p className="text-start mb-1"><b>Author:</b> {book.author}</p>
+            <p className="text-start mb-1"><b>Pages:</b> {book.pages}</p>
+            <p className="text-start mb-1"><b>Language:</b> {book.language}</p>
+            <p className="text-start mb-1"><b>Publication Year:</b> {book.publication_year}</p>
+          </div>
+          <div
+            className="text-center my-2 d-flex justify-content-center gap-2"
           >
-            Delete Book
-          </button>
-        </div>
+            <button onClick={() => setEdit(!edit)}
+              className="btn btn-warning"
+            >
+              {edit ? "Close Edit" : "Edit Book"}
+            </button>
+            <button onClick={async (e) => {
+              DeleteBook(e, isbn)
+              navigate("/");
+            }}
+              className="btn btn-danger"
+            >
+              Delete Book
+            </button>
+          </div>
+          <label className="form-check-label mt-2">Read:</label>
+          <input
+            type="checkbox"
+            title="is_read"
+            checked={book.is_read}
+            onChange={async (e) => {
+              CheckBook(e, isbn, book.is_read);
+              setBook({ ...book, is_read: e.target.checked });
+            }}
+          />
+        </>
         : <></>}
       {edit ?
         <form
