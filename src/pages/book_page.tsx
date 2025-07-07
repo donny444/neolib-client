@@ -15,6 +15,7 @@ export default function BookPage(): JSX.Element {
   const [book, setBook] = useState<BookType>({} as unknown as BookType);
   const isbn = useParams().isbn as string;
   const isAuthenticated = useAuth()?.isAuthenticated;
+  const username = useAuth()?.username;
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -61,6 +62,7 @@ export default function BookPage(): JSX.Element {
             className="container-md d-flex flex-column w-50 p-3 mx-auto border border-2 border-dark rounded-3"
             style={{ maxWidth: "720px" }}
           >
+            <img src={import.meta.env.VITE_IMAGE_PATH + `${username}/${book.isbn}${book.file_extension}`} alt={book.title} />
             <p className="text-center mb-1"><b>{book.title}</b></p>
             <p className="text-center mb-1"><b>ISBN: {book.isbn}</b></p>
             <p className="text-start mb-1"><b>Publisher:</b> {book.publisher}</p>
