@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState, JSX } from "reac
 
 interface AuthContextType {
   isAuthenticated: boolean | undefined;
+  username: string | null;
   checkAuth: () => void;
   signout: () => void;
 }
@@ -10,6 +11,7 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }): JSX.Element {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | undefined>(undefined);
+  const username = sessionStorage.getItem("username");
 
   const checkAuth = () => {
     const token = sessionStorage.getItem("token");
@@ -18,6 +20,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }): JSX.E
 
   const signout = () => {
     sessionStorage.removeItem("token");
+    sessionStorage.removeItem("username");
     setIsAuthenticated(false);
   };
 
@@ -26,7 +29,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }): JSX.E
   }, []);
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, checkAuth, signout }}>
+    <AuthContext.Provider value={{ isAuthenticated, username, checkAuth, signout }}>
       {children}
     </AuthContext.Provider>
   );
