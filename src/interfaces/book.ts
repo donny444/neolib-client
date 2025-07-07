@@ -10,4 +10,5 @@ export default interface BookType {
     is_read?: boolean;
     file?: File;
     path?: string;
+    file_extension?: string;
 }
