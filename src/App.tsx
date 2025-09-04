@@ -6,6 +6,7 @@ import {
   NewBookPage,
   SignInPage,
   SignUpPage,
+  DashboardPage,
 } from "./pages";
 import NavBar from "./components/navbar";
 import { AuthProvider } from "./contexts/auth_context";
@@ -22,6 +23,7 @@ function App(): JSX.Element {
           <Route path="/new-book" element={<NewBookPage />} />
           <Route path="/signin" element={<SignInPage />} />
           <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/dashboard" element={<DashboardPage />} />
         </Routes>
       </Router>
     </AuthProvider>
