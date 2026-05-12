@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { useAuth } from '../contexts/auth_context';
 
 export default function SignInPage() {
@@ -17,16 +17,21 @@ export default function SignInPage() {
   }, [isAuthenticated, navigate]);
 
   const handleSubmit = async (e: React.FormEvent, usernameOrEmail: string, password: string) => {
-    e.preventDefault();
-    const response = await handleSignIn(usernameOrEmail, password);
-    if (response?.status === 200) {
-        const { username, token, message } = response?.data;
-        console.log(message);
-        sessionStorage.setItem("username", username);
-        sessionStorage.setItem("token", token);
-        navigate("/");
-    } else {
-      setError("Invalid username or password. Please try again.");
+    try {
+      e.preventDefault();
+      const response = await handleSignIn(usernameOrEmail, password);
+      if (response?.status === 200) {
+          const { username, token, message } = response.data;
+          alert(message);
+          sessionStorage.setItem("username", username);
+          sessionStorage.setItem("token", token);
+          navigate("/");
+      } else {
+        setError("Invalid username or password. Please try again.");
+      }
+    } catch (err) {
+      console.error(err);
+      setError("An error occurred during sign-in. Please try again later.");
     }
   }
 
@@ -75,7 +80,7 @@ export default function SignInPage() {
   );
 }
 
-async function handleSignIn(usernameOrEmail: string, password: string) {
+async function handleSignIn(usernameOrEmail: string, password: string): Promise<AxiosResponse | null> {
   try {
     const formData = new FormData();
     formData.append("usernameOrEmail", usernameOrEmail);

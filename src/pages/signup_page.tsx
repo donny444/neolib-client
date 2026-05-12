@@ -7,7 +7,6 @@ export default function SignUpPage() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [data, setData] = useState<string>("");
   const [error, setError] = useState("");
   const isAuthenticated = useAuth()?.isAuthenticated;
   const navigate = useNavigate();
@@ -22,8 +21,6 @@ export default function SignUpPage() {
     e.preventDefault();
     const response = await handleSignUp(username, email, password);
     if (response?.status === 201) {
-        const data: string = response?.data;
-        setData(data);
         navigate("/signin");
     } else {
       setError("Invalid username or password. Please try again.");
